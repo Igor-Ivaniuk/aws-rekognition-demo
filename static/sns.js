@@ -1,17 +1,6 @@
 // Email ARN
 var topicARN = 'arn:aws:sns:eu-west-1:637530424188:fiveguysemail'
 
-function startSNS()
-{
-    // Load the AWS SDK
-    var AWS = require('aws-sdk');
-    // Set region
-    AWS.config.update({region: 'eu-west-1'});
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: '<YOUR-IDENTITY-POOL-HERE>',
-    });
-}
-
 function publishToSNS(message)
 {
     // Create publish parameters
