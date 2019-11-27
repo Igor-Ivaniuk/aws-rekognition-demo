@@ -15,7 +15,7 @@ var emotionTexts = {
   function startRekognition() {
     AWS.config.region = 'eu-west-1'; // Region
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: '<YOUR-IDENTITY-POOL-HERE>',
+        IdentityPoolId: params.cognitoPool,
     });
     rekognition = new AWS.Rekognition();
   }
