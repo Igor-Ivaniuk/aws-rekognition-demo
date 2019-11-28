@@ -90,7 +90,6 @@ function getAndListLabels() {
                 $("#faceBadGuyText").empty();
                 if (data.FaceMatches.length > 0) {
 
-                    console.log(data);
 
                     let faceBadGuy = document.getElementById("faceBadGuy")
                     faceBadGuy.style.top = (data.SearchedFaceBoundingBox.Top * camHeight) + "px"
@@ -103,18 +102,13 @@ function getAndListLabels() {
                     // faceCollection.style.height = (data.FaceMatches[0].Face.BoundingBox.Height * camHeight) + "px";
                     // faceCollection.style.width = (data.FaceMatches[0].Face.BoundingBox.Width * camWidth) + "px";
 
-                    $.ajax({
-                        url: "https://rbsxsslare.execute-api.eu-west-1.amazonaws.com/api/face-metadata" + "?faceId=" + data.FaceMatches[0].Face.FaceId,
-                        contentType: "application/json",
-                        dataType: 'json',
-                        success: function(result){
-                            console.log(result);
-                        }
-                    })
+                    $.getJSON("https://rbsxsslare.execute-api.eu-west-1.amazonaws.com/api/face-metadata" + "?faceId=" + data.FaceMatches[0].Face.FaceId,
+                    function(nameResponse) {
+                        let faceBadGuyText = document.getElementById("faceBadGuyText");
+                        faceBadGuyText.innerHTML = 'Unwanted person!!! It is '+nameResponse.body.Item.name+' (Sure about it for ' + data.FaceMatches[0].Face.Confidence + '%)';
+                        faceBadGuyText.style.visibility = "visible";
+                    });
 
-                    let faceBadGuyText = document.getElementById("faceBadGuyText")
-                    faceBadGuyText.innerHTML = 'Unwanted person!!! (Sure about it for ' + data.FaceMatches[0].Face.Confidence + '%)';
-                    faceBadGuyText.style.visibility = "visible";
                     faceBadGuy.style.visibility = "visible";
                 } else {
                     document.getElementById("faceBadGuy").style.visibility = "hidden";
