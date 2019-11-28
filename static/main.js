@@ -1,13 +1,3 @@
-var emotionTexts = {
-    "CALM": "Tengo sueño, ¡necesito la energía de AWS!",
-    "SAD": "Los servidores on-prem me entristecen...",
-    "CONFUSED": "No entiendo esta demo, voy a preguntarle a un SA",
-    "HAPPY": "¡Me encanta la inteligencia artificial!",
-    "ANGRY": "El hambre me tiene de mal humor...",
-    "DISGUSTED": "¿Algún médico en la sala?",
-    "SURPRISED": "¡Hala! ¡como mola esta demo!"
-};
-
 var rekognition = null;
 var camWidth = 0;
 var camHeight = 0;
@@ -42,81 +32,18 @@ function getAndListLabels() {
             }
         };
 
-        rekognition.detectLabels(params, function (err, data) {
-
-            if (err) console.log(err, err.stack); // an error occurred
-            else {
-
-                $("#labelResults").empty();
-                let labelTemplate = "<div><span class='rekLabel'></span> - <span class='rekScore'></span> %</div>";
-
-                $.each(data.Labels, function (index, value) {
-
-                    if (value.Confidence > 50) {
-                        let LabelToAdd = $(labelTemplate);
-                        $(LabelToAdd).find(".rekLabel").text(value.Name.toLowerCase());
-                        $(LabelToAdd).find(".rekScore").text(Math.floor(value.Confidence));
-                        $("#labelResults").append(LabelToAdd);
-                    }
-                });
-            }
-        });
-
         rekognition.detectFaces(params1, function (err, data) {
             if (err) console.log(err, err.stack); // an error occurred
             else {
-                $("#faceResults").empty();
                 $("#faceBox").empty();
                 if (data.FaceDetails.length > 0) {
-
-                    labelTemplate = "<div><span class='rekType'></span> - <span class='rekScore'></span> %</div>";
-                    $.each(data.FaceDetails[0].Emotions, function (index, value) {
-
-                        if (value.Confidence > 30) {
-
-                            let LabelToAdd = $(labelTemplate);
-                            $(LabelToAdd).find(".rekType").text(value.Type.toLowerCase());
-                            $(LabelToAdd).find(".rekScore").text(Math.floor(value.Confidence));
-                            $("#faceResults").append(LabelToAdd);
-
-                            if (mainEmotion == null || (mainEmotion != null && value.Confidence > mainEmotion.Confidence))
-                                mainEmotion = value;
-                        }
-                    });
-
-                    // bounding box
-                    let box = document.getElementById("box")
-                    box.style.left = (data.FaceDetails[0].BoundingBox.Left * camWidth) + "px";
-                    box.style.width = (data.FaceDetails[0].BoundingBox.Width * camWidth) + "px";
-                    box.style.top = (data.FaceDetails[0].BoundingBox.Top * camHeight) + "px";
-                    box.style.height = (data.FaceDetails[0].BoundingBox.Height * camHeight) + "px";
-
-                    // speech bubbles
-                    let speechBubble = document.getElementById("speechBubble")
-                    speechBubble.style.left = ((data.FaceDetails[0].BoundingBox.Left * camWidth) + (data.FaceDetails[0].BoundingBox.Width * camWidth)) + "px";
-                    speechBubble.style.top = ((data.FaceDetails[0].BoundingBox.Top * camHeight) - 100) + "px";
-
-                    let faceResults = document.getElementById("faceResults")
-                    faceResults.style.top = (data.FaceDetails[0].BoundingBox.Top * camHeight - 50) + "px"
-                    faceResults.style.left = (data.FaceDetails[0].BoundingBox.Left * camWidth - 20) + "px"
-
                     let faceBox = document.getElementById("faceBox")
                     faceBox.style.top = (data.FaceDetails[0].BoundingBox.Top * camHeight) + "px"
                     faceBox.style.left = (data.FaceDetails[0].BoundingBox.Left * camWidth) + "px"
                     faceBox.style.height = (data.FaceDetails[0].BoundingBox.Height * camHeight) + "px";
                     faceBox.style.width = (data.FaceDetails[0].BoundingBox.Width * camWidth) + "px";
-
-                    if (mainEmotion != null && mainEmotion.Confidence > 30 && mainEmotion.Type in emotionTexts) {
-                        speechBubble.innerText = emotionTexts[mainEmotion.Type];
-                        speechBubble.style.visibility = "visible";
-                        faceResults.style.visibility = "visible";
-                        faceBox.style.visibility = "visible";
-                    }
-
+                    faceBox.style.visibility = "visible";
                 } else {
-                    // no faces onscreen
-                    document.getElementById("speechBubble").style.visibility = "hidden";
-                    document.getElementById("faceResults").style.visibility = "hidden";
                     document.getElementById("faceBox").style.visibility = "hidden";
                 }
             }
@@ -126,17 +53,61 @@ function getAndListLabels() {
             if (err) console.log(err, err.stack); // an error occurred
             else {
                 $("#faceCelebrity").empty();
+                $("#faceCelebrityText").empty();
                 if (data.CelebrityFaces.length > 0) {
                     let faceCelebrity = document.getElementById("faceCelebrity")
                     faceCelebrity.style.top = (data.CelebrityFaces[0].Face.BoundingBox.Top * camHeight) + "px"
                     faceCelebrity.style.left = (data.CelebrityFaces[0].Face.BoundingBox.Left * camWidth) + "px"
                     faceCelebrity.style.height = (data.CelebrityFaces[0].Face.BoundingBox.Height * camHeight) + "px";
                     faceCelebrity.style.width = (data.CelebrityFaces[0].Face.BoundingBox.Width * camWidth) + "px";
-                    faceCelebrity.innerHTML = data.CelebrityFaces[0].Name + ' - ' + data.CelebrityFaces[0].MatchConfidence + '%';
+
+                    let faceCelebrityText = document.getElementById("faceCelebrityText")
+                    faceCelebrityText.innerHTML = data.CelebrityFaces[0].Name + ' in da house! (Sure about it for ' + data.CelebrityFaces[0].MatchConfidence + '%)';
                     faceCelebrity.style.visibility = "visible";
+                    faceCelebrityText.style.visibility = "visible";
                     console.log(data);
                 } else {
                     document.getElementById("faceCelebrity").style.visibility = "hidden";
+                    document.getElementById("faceCelebrityText").style.visibility = "hidden";
+                }
+            }
+        });
+
+        var searchByCollectionParams = {
+            CollectionId: "known-faces", 
+            FaceMatchThreshold: 90, 
+            Image: {
+                Bytes: imageBlob
+            }
+        };
+
+        rekognition.searchFacesByImage(searchByCollectionParams, function (err, data) {
+            if (err) console.log(err, err.stack); // an error occurred
+            else {
+                $("#faceBadGuy").empty();
+                $("#faceBadGuyText").empty();
+                if (data.FaceMatches.length > 0) {
+
+                    console.log(data);
+
+                    let faceBadGuy = document.getElementById("faceBadGuy")
+                    faceBadGuy.style.top = (data.SearchedFaceBoundingBox.Top * camHeight) + "px"
+                    faceBadGuy.style.left = (data.SearchedFaceBoundingBox.Left * camWidth) + "px"
+                    faceBadGuy.style.height = (data.SearchedFaceBoundingBox.Height * camHeight) + "px";
+                    faceBadGuy.style.width = (data.SearchedFaceBoundingBox.Width * camWidth) + "px";
+
+                    // faceCollection.style.top = (data.FaceMatches[0].Face.BoundingBox.Top * camHeight) + "px"
+                    // faceCollection.style.left = (data.FaceMatches[0].Face.BoundingBox.Left * camWidth) + "px"
+                    // faceCollection.style.height = (data.FaceMatches[0].Face.BoundingBox.Height * camHeight) + "px";
+                    // faceCollection.style.width = (data.FaceMatches[0].Face.BoundingBox.Width * camWidth) + "px";
+
+                    let faceBadGuyText = document.getElementById("faceBadGuyText")
+                    faceBadGuyText.innerHTML = 'Unwanted person!!! (Sure about it for ' + data.FaceMatches[0].Face.Confidence + '%)';
+                    faceBadGuyText.style.visibility = "visible";
+                    faceBadGuy.style.visibility = "visible";
+                } else {
+                    document.getElementById("faceBadGuy").style.visibility = "hidden";
+                    document.getElementById("faceBadGuyText").style.visibility = "hidden";
                 }
             }
         });
