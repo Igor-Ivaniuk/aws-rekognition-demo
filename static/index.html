@@ -15,15 +15,10 @@
 
   <!--<link rel="stylesheet" type="text/css" href="./result-light.css">-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/croppie/{version}/croppie.min.css">
 
   <script type="text/javascript" src="https://sdk.amazonaws.com/js/aws-sdk-2.548.0.min.js"></script>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script type="text/javascript" src="https://s3.amazonaws.com/devspacepaulsites/webcam.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/{version}/croppie.min.js"></script>
-
- 
-
 
   <script type="text/javascript" src="https://salaunch-fiveguys.s3.amazonaws.com/credentials.js?AWSAccessKeyId=AKIAZI36GIN6JYY77O44&Signature=YX5fWzbVA9MRS%2FRhNNKecscwkh4%3D&Expires=1575043473"></script>
   <script type="text/javascript" src="https://salaunch-fiveguys.s3.amazonaws.com/main.js?AWSAccessKeyId=AKIAZI36GIN6JYY77O44&Signature=Y0NEGojStPimQ43X5nmGdYxDbd4%3D&Expires=1575043462"></script>
@@ -125,12 +120,11 @@
 
     #faceBadGuyText {
       color: red;
-      font-family: monospace;
+      background-color: yellow;
+      font-family: sans-serif;
       visibility: hidden;
       font-size: 30px;
-      
-      width: 600px;
-      padding: 5px;
+      width: 1280px;
     }
 
     #uploadPage {
@@ -165,8 +159,8 @@
 
       initAWS();
       
-      let viewWidth = 1200
-      let viewHeight = 640
+      let viewWidth = 1280
+      let viewHeight = 720
       
       Webcam.set({
         width: viewWidth,
