@@ -15,10 +15,15 @@
 
   <!--<link rel="stylesheet" type="text/css" href="./result-light.css">-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/croppie/{version}/croppie.min.css">
 
   <script type="text/javascript" src="https://sdk.amazonaws.com/js/aws-sdk-2.548.0.min.js"></script>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script type="text/javascript" src="https://s3.amazonaws.com/devspacepaulsites/webcam.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/{version}/croppie.min.js"></script>
+
+ 
+
 
   <script type="text/javascript" src="credentials.js"></script>
   <script type="text/javascript" src="main.js"></script>
@@ -98,7 +103,7 @@
       
       position: absolute;
       top: 20px;
-      left: 20px;
+      left: 200px;
       width: 600px;
       padding: 5px;
     }
@@ -124,9 +129,13 @@
       visibility: hidden;
       font-size: 20px;
       
-      position: absolute;
-      top: 20px;
-      left: 20px;
+      width: 600px;
+      padding: 5px;
+    }
+
+    #uploadPage {
+      color: lightskyblue;
+
       width: 600px;
       padding: 5px;
     }
@@ -179,7 +188,7 @@
         startRekognition();
         setInterval(function() {
           getAndListLabels();
-        }, 2000);
+        }, 1000);
       });
     }
 
@@ -189,13 +198,13 @@
 
 <body>
   <div>
+    <div id="uploadPage"><a href="upload.html">Upload a Bad guy</a></div>
     <div id="videoFrame"></div>
-    <div id="labelResults"></div>
+    <div id="faceBadGuyText"></div>
     <div id="faceBox"></div>
     <div id="faceCelebrity"></div>
     <div id="faceCelebrityText"></div>
     <div id="faceBadGuy"></div>
-    <div id="faceBadGuyText"></div>
     <div class="arrow bottom right"></div>
   </div>
 
