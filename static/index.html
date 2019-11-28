@@ -103,7 +103,7 @@
       
       position: absolute;
       top: 20px;
-      left: 20px;
+      left: 200px;
       width: 600px;
       padding: 5px;
     }
@@ -129,9 +129,13 @@
       visibility: hidden;
       font-size: 20px;
       
-      position: absolute;
-      top: 20px;
-      left: 20px;
+      width: 600px;
+      padding: 5px;
+    }
+
+    #uploadPage {
+      color: lightskyblue;
+
       width: 600px;
       padding: 5px;
     }
@@ -194,13 +198,13 @@
 
 <body>
   <div>
-    <div id="videoFrame" onclick="snapBadGuy(this)"></div>
-    <div id="labelResults"></div>
+    <div id="uploadPage"><a href="upload.html">Upload a Bad guy</a></div>
+    <div id="videoFrame"></div>
+    <div id="faceBadGuyText"></div>
     <div id="faceBox"></div>
     <div id="faceCelebrity"></div>
     <div id="faceCelebrityText"></div>
     <div id="faceBadGuy"></div>
-    <div id="faceBadGuyText"></div>
     <div class="arrow bottom right"></div>
   </div>
 

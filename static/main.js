@@ -109,7 +109,7 @@ function getAndListLabels() {
                     $.getJSON("https://rbsxsslare.execute-api.eu-west-1.amazonaws.com/api/face-metadata" + "?faceId=" + data.FaceMatches[0].Face.FaceId,
                         function (nameResponse) {
                             let faceBadGuyText = document.getElementById("faceBadGuyText");
-                            faceBadGuyText.innerHTML = 'Unwanted person!!! It is ' + nameResponse.body.Item.name + ' (Sure about it for ' + data.FaceMatches[0].Face.Confidence + '%)';
+                            faceBadGuyText.innerHTML = 'Bad Guy!!! It is ' + nameResponse.body.Item.name + ' (Sure about it for ' + data.FaceMatches[0].Face.Confidence + '%)';
                             faceBadGuyText.style.visibility = "visible";
                         });
 
