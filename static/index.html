@@ -15,10 +15,15 @@
 
   <!--<link rel="stylesheet" type="text/css" href="./result-light.css">-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/croppie/{version}/croppie.min.css">
 
   <script type="text/javascript" src="https://sdk.amazonaws.com/js/aws-sdk-2.548.0.min.js"></script>
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   <script type="text/javascript" src="https://s3.amazonaws.com/devspacepaulsites/webcam.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/{version}/croppie.min.js"></script>
+
+ 
+
 
   <script type="text/javascript" src="credentials.js"></script>
   <script type="text/javascript" src="main.js"></script>
@@ -179,7 +184,7 @@
         startRekognition();
         setInterval(function() {
           getAndListLabels();
-        }, 5000);
+        }, 1000);
       });
     }
 
@@ -189,7 +194,7 @@
 
 <body>
   <div>
-    <div id="videoFrame"></div>
+    <div id="videoFrame" onclick="snapBadGuy(this)"></div>
     <div id="labelResults"></div>
     <div id="faceBox"></div>
     <div id="faceCelebrity"></div>

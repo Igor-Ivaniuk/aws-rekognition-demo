@@ -2,6 +2,14 @@ var rekognition = null;
 var camWidth = 0;
 var camHeight = 0;
 
+var face = null;
+
+$(document).ready(function (e) {
+    $('#videoFrame').click(function (e) {
+        snapBadGuy(e.pageX, e.pageY)
+    });
+});
+
 function initAWS() {
     AWS.config.region = 'eu-west-1'; // Region
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -43,6 +51,8 @@ function getAndListLabels() {
                     faceBox.style.height = (data.FaceDetails[0].BoundingBox.Height * camHeight) + "px";
                     faceBox.style.width = (data.FaceDetails[0].BoundingBox.Width * camWidth) + "px";
                     faceBox.style.visibility = "visible";
+
+
                 } else {
                     document.getElementById("faceBox").style.visibility = "hidden";
                 }
@@ -90,24 +100,18 @@ function getAndListLabels() {
                 $("#faceBadGuyText").empty();
                 if (data.FaceMatches.length > 0) {
 
-
                     let faceBadGuy = document.getElementById("faceBadGuy")
                     faceBadGuy.style.top = (data.SearchedFaceBoundingBox.Top * camHeight) + "px"
                     faceBadGuy.style.left = (data.SearchedFaceBoundingBox.Left * camWidth) + "px"
                     faceBadGuy.style.height = (data.SearchedFaceBoundingBox.Height * camHeight) + "px";
                     faceBadGuy.style.width = (data.SearchedFaceBoundingBox.Width * camWidth) + "px";
 
-                    // faceCollection.style.top = (data.FaceMatches[0].Face.BoundingBox.Top * camHeight) + "px"
-                    // faceCollection.style.left = (data.FaceMatches[0].Face.BoundingBox.Left * camWidth) + "px"
-                    // faceCollection.style.height = (data.FaceMatches[0].Face.BoundingBox.Height * camHeight) + "px";
-                    // faceCollection.style.width = (data.FaceMatches[0].Face.BoundingBox.Width * camWidth) + "px";
-
                     $.getJSON("https://rbsxsslare.execute-api.eu-west-1.amazonaws.com/api/face-metadata" + "?faceId=" + data.FaceMatches[0].Face.FaceId,
-                    function(nameResponse) {
-                        let faceBadGuyText = document.getElementById("faceBadGuyText");
-                        faceBadGuyText.innerHTML = 'Unwanted person!!! It is '+nameResponse.body.Item.name+' (Sure about it for ' + data.FaceMatches[0].Face.Confidence + '%)';
-                        faceBadGuyText.style.visibility = "visible";
-                    });
+                        function (nameResponse) {
+                            let faceBadGuyText = document.getElementById("faceBadGuyText");
+                            faceBadGuyText.innerHTML = 'Unwanted person!!! It is ' + nameResponse.body.Item.name + ' (Sure about it for ' + data.FaceMatches[0].Face.Confidence + '%)';
+                            faceBadGuyText.style.visibility = "visible";
+                        });
 
                     faceBadGuy.style.visibility = "visible";
                 } else {
@@ -127,4 +131,8 @@ function dataURItoBlob(dataURI) {
         array.push(binary.charCodeAt(i));
     }
     return new Uint8Array(array);
+}
+
+function snapBadGuy(x, y) {
+    // console.log(x + ' , ' + y);
 }
