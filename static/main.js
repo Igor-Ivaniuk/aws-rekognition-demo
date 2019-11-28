@@ -63,8 +63,10 @@ function getAndListLabels() {
 
                     let faceCelebrityText = document.getElementById("faceCelebrityText")
                     faceCelebrityText.innerHTML = data.CelebrityFaces[0].Name + ' in da house! (Sure about it for ' + data.CelebrityFaces[0].MatchConfidence + '%)';
-                    faceCelebrity.style.visibility = "visible";
-                    faceCelebrityText.style.visibility = "visible";
+                    if (data.CelebrityFaces[0].MatchConfidence > 90) {
+                        faceCelebrity.style.visibility = "visible";
+                        faceCelebrityText.style.visibility = "visible";
+                    }
                     console.log(data);
                 } else {
                     document.getElementById("faceCelebrity").style.visibility = "hidden";
@@ -74,8 +76,8 @@ function getAndListLabels() {
         });
 
         var searchByCollectionParams = {
-            CollectionId: "known-faces", 
-            FaceMatchThreshold: 90, 
+            CollectionId: "known-faces",
+            FaceMatchThreshold: 90,
             Image: {
                 Bytes: imageBlob
             }
@@ -100,6 +102,15 @@ function getAndListLabels() {
                     // faceCollection.style.left = (data.FaceMatches[0].Face.BoundingBox.Left * camWidth) + "px"
                     // faceCollection.style.height = (data.FaceMatches[0].Face.BoundingBox.Height * camHeight) + "px";
                     // faceCollection.style.width = (data.FaceMatches[0].Face.BoundingBox.Width * camWidth) + "px";
+
+                    $.ajax({
+                        url: "https://rbsxsslare.execute-api.eu-west-1.amazonaws.com/api/face-metadata" + "?faceId=" + data.FaceMatches[0].Face.FaceId,
+                        contentType: "application/json",
+                        dataType: 'json',
+                        success: function(result){
+                            console.log(result);
+                        }
+                    })
 
                     let faceBadGuyText = document.getElementById("faceBadGuyText")
                     faceBadGuyText.innerHTML = 'Unwanted person!!! (Sure about it for ' + data.FaceMatches[0].Face.Confidence + '%)';

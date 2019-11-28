@@ -15,7 +15,7 @@ exports.handler = async (event) => {
     //Setup error response
     const errorResponse = {
         statusCode: 500,
-        body: JSON.stringify('Fail!')
+        body: JSON.stringify("Fail!")
     };
     
 
@@ -100,7 +100,7 @@ exports.handler = async (event) => {
 
     const response = {
         statusCode: 200,
-        body: JSON.stringify('Success!')
+        body: JSON.stringify("Success!")
     };
 
     return response;
