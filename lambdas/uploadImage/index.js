@@ -25,11 +25,16 @@ exports.handler = async (event) => {
 
     //Convert base64 string to byte buffer
     const buffer = Buffer.from(event['imageData'], 'base64');
+    //Generate image key
+    var dateTime = new Date();
+
+    var imageKey = dateTime.getTime() + event['name'] + ".jpg";
+
 
     var upload = new AWS.S3.ManagedUpload({
         params: {
             Bucket: bucketName,
-            Key: event['imageURL'],
+            Key: imageKey,
             Body: buffer
         }
     });
@@ -40,7 +45,7 @@ exports.handler = async (event) => {
         console.log("\nSuccessfully uploaded photo.", "\n");
     }
     else{
-        console.log("\nERRRO: Unable to upload photo to S3", "\n");
+        console.log("\nERROR: Unable to upload photo to S3", "\n");
         return errorResponse;
     }
 
@@ -59,7 +64,7 @@ exports.handler = async (event) => {
         Image: {
             S3Object: {
                 Bucket: bucketName,
-                Name: event['imageURL']
+                Name: imageKey
             }
         }
     };
@@ -85,7 +90,7 @@ exports.handler = async (event) => {
         Item: {
             faceId: { S: faceId },
             imageId: { S: imageId },
-            imageURL: { S: event['imageURL'] },
+            imageURL: { S: imageKey },
             name: { S: event['name'] }
         }
     };
