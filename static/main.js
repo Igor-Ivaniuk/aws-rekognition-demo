@@ -52,7 +52,6 @@ function getAndListLabels() {
                     faceBox.style.width = (data.FaceDetails[0].BoundingBox.Width * camWidth) + "px";
                     faceBox.style.visibility = "visible";
 
-
                 } else {
                     document.getElementById("faceBox").style.visibility = "hidden";
                 }
@@ -77,7 +76,6 @@ function getAndListLabels() {
                         faceCelebrity.style.visibility = "visible";
                         faceCelebrityText.style.visibility = "visible";
                     }
-                    console.log(data);
                 } else {
                     document.getElementById("faceCelebrity").style.visibility = "hidden";
                     document.getElementById("faceCelebrityText").style.visibility = "hidden";
@@ -105,14 +103,13 @@ function getAndListLabels() {
                     faceBadGuy.style.left = (data.SearchedFaceBoundingBox.Left * camWidth) + "px"
                     faceBadGuy.style.height = (data.SearchedFaceBoundingBox.Height * camHeight) + "px";
                     faceBadGuy.style.width = (data.SearchedFaceBoundingBox.Width * camWidth) + "px";
-
                     $.getJSON("https://rbsxsslare.execute-api.eu-west-1.amazonaws.com/api/face-metadata" + "?faceId=" + data.FaceMatches[0].Face.FaceId,
                         function (nameResponse) {
                             let faceBadGuyText = document.getElementById("faceBadGuyText");
                             faceBadGuyText.innerHTML = 'Bad Guy!!! It is ' + nameResponse.body.Item.name + ' (Sure about it for ' + data.FaceMatches[0].Face.Confidence + '%)';
                             faceBadGuyText.style.visibility = "visible";
+                            publishToSNS(data.FaceMatches[0].Face.FaceId, "Bad guy spotted - " + nameResponse.body.Item.name)
                         });
-
                     faceBadGuy.style.visibility = "visible";
                 } else {
                     document.getElementById("faceBadGuy").style.visibility = "hidden";
