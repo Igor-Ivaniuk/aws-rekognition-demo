@@ -24,13 +24,14 @@ exports.handler = async (event) => {
     //
 
     //Convert base64 string to byte buffer
-    const buffer = Buffer.from(event['imageData'], 'base64');
+    var json = JSON.parse(event.body);
+    var imageBase64 = json.imageData.split(',');
+    const buffer = Buffer.from(imageBase64[1], 'base64');
     //Generate image key
     var dateTime = new Date();
-
-    var imageKey = dateTime.getTime() + event['name'] + ".jpg";
-
-
+    var imageKey = "images/" + dateTime.getTime() + json.name + ".jpg";
+    console.log(imageKey);
+    console.log(json)
     var upload = new AWS.S3.ManagedUpload({
         params: {
             Bucket: bucketName,
@@ -91,7 +92,7 @@ exports.handler = async (event) => {
             faceId: { S: faceId },
             imageId: { S: imageId },
             imageURL: { S: imageKey },
-            name: { S: event['name'] }
+            name: { S: json.name }
         }
     };
     
@@ -104,6 +105,10 @@ exports.handler = async (event) => {
     }
 
     const response = {
+        headers: {
+            "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+            "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS 
+        },
         statusCode: 200,
         body: JSON.stringify("Success!")
     };

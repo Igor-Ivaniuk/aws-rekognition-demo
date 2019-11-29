@@ -1,5 +1,4 @@
 exports.handler = async function (event) {
-    console.log(event.faceId)
     // Load the AWS SDK for Node.js
     var AWS = require('aws-sdk');
     // Set the region 
@@ -21,9 +20,14 @@ exports.handler = async function (event) {
     };
 
     let response = {
+          headers: {
+            "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+            "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS 
+          },
         statusCode: 000,
         body: ""
     }
+
 
     let data = await docClient.get(params).promise();
 
