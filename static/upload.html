@@ -8,10 +8,44 @@
         <script type="text/javascript" src="https://salaunch-fiveguys.s3.amazonaws.com/credentials.js?AWSAccessKeyId=AKIAZI36GIN6JYY77O44&Signature=YX5fWzbVA9MRS%2FRhNNKecscwkh4%3D&Expires=1575043473"></script>
         <script type="text/javascript" src="https://salaunch-fiveguys.s3.amazonaws.com/main.js?AWSAccessKeyId=AKIAZI36GIN6JYY77O44&Signature=Y0NEGojStPimQ43X5nmGdYxDbd4%3D&Expires=1575043462"></script>
         <script type="text/javascript" src="https://salaunch-fiveguys.s3.amazonaws.com/uploadImage.js?AWSAccessKeyId=AKIAZI36GIN6JYY77O44&Signature=y4mzZEINR5Lm2qOLCI8Jff17L04%3D&Expires=1575049450"></script>
+
+        <style id="compiled-css" type="text/css">
+            #main 
+            {
+                width: 400px;
+                margin: auto;
+                margin-top: 200px;
+                font-size: x-large;
+            }
+            #name
+            {
+                width: 100%;
+                float: left;
+            }
+            #image
+            {
+                width: 100%;
+                float: left;
+            }
+            #buttonInput
+            {
+                margin-top: 20px;
+                margin-right: 20px;
+                float: right;
+            }
+        </style>
+
     </head>
-    <body id="main">
-        Name: <input id="nameInput" type="text"/>
-        Image of person: <input id="fileInput" type="file" />
-        <input type="button" id="buttonInput" onclick="uploadImage(this)" value="Upload Image"/>
+    <body>
+        <div id="main">
+            <div id="title"><h1>Upload bad guy</h1></div>
+            <div id="name">
+                Name: <input id="nameInput" type="text"/>
+            </div>
+            <div id="image">
+                Image of bad guy: <input id="fileInput" type="file" />
+            </div>
+            <input type="button" id="buttonInput" onclick="uploadImage(this)" value="Upload Image"/>
+        </div>
     </body>
 </html>
